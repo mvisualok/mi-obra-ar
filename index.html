@@ -4,73 +4,67 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Mi Obra AR</title>
-  
+
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  
+
   <style>
     body { margin: 0; overflow: hidden; background: #000; }
-    
+
     #start-screen {
       position: fixed;
       inset: 0;
-      background: #111;
+      background: rgba(0, 0, 0, 0.92);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 9999;
       color: white;
-      font-family: -apple-system, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
       text-align: center;
-      padding: 20px;
+      padding: 24px;
     }
-    
+
     #start-btn {
-      background: #fff;
-      color: #000;
+      background: white;
+      color: black;
       border: none;
-      padding: 18px 40px;
+      padding: 18px 42px;
       font-size: 18px;
       font-weight: 600;
       border-radius: 50px;
-      margin-top: 25px;
+      margin-top: 28px;
       cursor: pointer;
-    }
-    
-    #start-btn:active {
-      transform: scale(0.96);
     }
   </style>
 </head>
 <body>
 
-  <!-- Pantalla de inicio (importante para iPhone) -->
+  <!-- Capa de inicio (se quita al tocar el botón) -->
   <div id="start-screen">
-    <div style="font-size: 22px; font-weight: 600; margin-bottom: 8px;">Realidad Aumentada</div>
-    <div style="opacity: 0.7; font-size: 15px; max-width: 280px;">
-      Tocá el botón para activar la cámara y apuntá a la obra
+    <div style="font-size: 22px; font-weight: 600;">Realidad Aumentada</div>
+    <div style="opacity: 0.75; font-size: 15px; margin-top: 10px; max-width: 280px;">
+      Tocá el botón y después apuntá la cámara a la obra
     </div>
     <button id="start-btn">Iniciar cámara</button>
   </div>
 
   <a-scene 
-    id="ar-scene"
     mindar-image="imageTargetSrc: ./targets.mind; filterMinCF: 0.0001; filterBeta: 1000; uiLoading: no; uiScanning: no; uiError: no;"
     color-space="sRGB"
     renderer="colorManagement: true, physicallyCorrectLights"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
-    embedded
-    style="display: none;">
+    embedded>
 
     <a-assets>
-      <img id="fondo"           src="fondo.png">
-      <img id="detalles_fondo"  src="detalles_fondo.png">
-      <img id="capa3"           src="capa3.png">
-      <img id="capa4"           src="capa4.png">
-      <img id="capa5"           src="capa5.png">
-      <img id="frente"          src="frente.png">
+      <img id="fondo" src="fondo.png">
+      <img id="detalles_fondo" src="detalles_fondo.png">
+      <img id="capa3" src="capa3.png">
+      <img id="capa4" src="capa4.png">
+      <img id="capa5" src="capa5.png">
+      <img id="frente" src="frente.png">
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -86,23 +80,118 @@
   </a-scene>
 
   <script>
-    const startBtn = document.getElementById('start-btn');
-    const startScreen = document.getElementById('start-screen');
-    const arScene = document.getElementById('ar-scene');
-
-    startBtn.addEventListener('click', async () => {
+    document.getElementById('start-btn').addEventListener('click', async () => {
       try {
-        // Pedimos permiso de cámara con gesto del usuario (obligatorio en iOS)
-        await navigator.mediaDevices.getUserMedia({ 
-          video: { facingMode: 'environment' } 
+        // Pedimos permiso de cámara (necesario en iOS)
+        await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'environment' }
         });
 
-        // Ocultamos la pantalla de inicio y mostramos la escena AR
-        startScreen.style.display = 'none';
-        arScene.style.display = 'block';
+        // Quitamos la capa de inicio
+        document.getElementById('start-screen').style.display = 'none';
 
       } catch (err) {
-        alert('No se pudo acceder a la cámara. Andá a Ajustes → Safari → Cámara y permití el acceso.');
+        alert('No se pudo acceder a la cámara.\n\nAndá a:\nAjustes → Safari → Cámara\ny permití el acceso para este sitio.');
+        console.error(err);
+      }
+    });
+  </script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Mi Obra AR</title>
+
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    body { margin: 0; overflow: hidden; background: #000; }
+
+    #start-screen {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      text-align: center;
+      padding: 24px;
+    }
+
+    #start-btn {
+      background: white;
+      color: black;
+      border: none;
+      padding: 18px 42px;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 50px;
+      margin-top: 28px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Capa de inicio (se quita al tocar el botón) -->
+  <div id="start-screen">
+    <div style="font-size: 22px; font-weight: 600;">Realidad Aumentada</div>
+    <div style="opacity: 0.75; font-size: 15px; margin-top: 10px; max-width: 280px;">
+      Tocá el botón y después apuntá la cámara a la obra
+    </div>
+    <button id="start-btn">Iniciar cámara</button>
+  </div>
+
+  <a-scene 
+    mindar-image="imageTargetSrc: ./targets.mind; filterMinCF: 0.0001; filterBeta: 1000; uiLoading: no; uiScanning: no; uiError: no;"
+    color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+    embedded>
+
+    <a-assets>
+      <img id="fondo" src="fondo.png">
+      <img id="detalles_fondo" src="detalles_fondo.png">
+      <img id="capa3" src="capa3.png">
+      <img id="capa4" src="capa4.png">
+      <img id="capa5" src="capa5.png">
+      <img id="frente" src="frente.png">
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-image src="#fondo"          position="0 0 0"    width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
+      <a-image src="#detalles_fondo" position="0 0 0.04" width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
+      <a-image src="#capa3"          position="0 0 0.08" width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
+      <a-image src="#capa4"          position="0 0 0.12" width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
+      <a-image src="#capa5"          position="0 0 0.16" width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
+      <a-image src="#frente"         position="0 0 0.22" width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    document.getElementById('start-btn').addEventListener('click', async () => {
+      try {
+        // Pedimos permiso de cámara (necesario en iOS)
+        await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'environment' }
+        });
+
+        // Quitamos la capa de inicio
+        document.getElementById('start-screen').style.display = 'none';
+
+      } catch (err) {
+        alert('No se pudo acceder a la cámara.\n\nAndá a:\nAjustes → Safari → Cámara\ny permití el acceso para este sitio.');
         console.error(err);
       }
     });
