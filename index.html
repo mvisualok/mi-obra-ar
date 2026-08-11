@@ -57,8 +57,8 @@
       uiLoading: no;
       uiScanning: no;
       uiError: no;
-      filterMinCF: 0.01;
-      filterBeta: 10;
+      filterMinCF: 0.08;
+      filterBeta: 2;
     "
     color-space="sRGB"
     renderer="colorManagement: true, physicallyCorrectLights"
@@ -79,7 +79,6 @@
 
     <a-entity mindar-image-target="targetIndex: 0">
 
-      <!-- Fondo + capa2 + capa3 (juntas) -->
       <a-image src="#fondo" position="0 0 0" width="1.35" height="1.9"
                material="transparent: true; alphaTest: 0.1"></a-image>
 
@@ -89,7 +88,7 @@
       <a-image src="#capa3" position="0 0 0.10" width="1.35" height="1.9"
                material="transparent: true; alphaTest: 0.1"></a-image>
 
-      <!-- Capa4 con movimiento en loop (adelante y atrás) -->
+      <!-- Capa4 con movimiento -->
       <a-image 
         src="#capa4" 
         position="0 0 0.22" 
@@ -107,7 +106,6 @@
         ">
       </a-image>
 
-      <!-- Capa5 y Frente -->
       <a-image src="#capa5" position="0 0 0.27" width="1.35" height="1.9"
                material="transparent: true; alphaTest: 0.1"></a-image>
 
