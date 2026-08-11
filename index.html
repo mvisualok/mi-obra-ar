@@ -5,23 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Mi Obra AR</title>
   
-  <!-- Versiones actualizadas -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   
   <style>
     body { margin: 0; overflow: hidden; background: #000; }
+    
+    #start-screen {
+      position: fixed;
+      inset: 0;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      color: white;
+      font-family: -apple-system, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    #start-btn {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 18px 40px;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 50px;
+      margin-top: 25px;
+      cursor: pointer;
+    }
+    
+    #start-btn:active {
+      transform: scale(0.96);
+    }
   </style>
 </head>
 <body>
 
+  <!-- Pantalla de inicio (importante para iPhone) -->
+  <div id="start-screen">
+    <div style="font-size: 22px; font-weight: 600; margin-bottom: 8px;">Realidad Aumentada</div>
+    <div style="opacity: 0.7; font-size: 15px; max-width: 280px;">
+      Tocá el botón para activar la cámara y apuntá a la obra
+    </div>
+    <button id="start-btn">Iniciar cámara</button>
+  </div>
+
   <a-scene 
-    mindar-image="imageTargetSrc: ./targets.mind; filterMinCF: 0.0001; filterBeta: 1000;"
+    id="ar-scene"
+    mindar-image="imageTargetSrc: ./targets.mind; filterMinCF: 0.0001; filterBeta: 1000; uiLoading: no; uiScanning: no; uiError: no;"
     color-space="sRGB"
     renderer="colorManagement: true, physicallyCorrectLights"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
-    embedded>
+    embedded
+    style="display: none;">
 
     <a-assets>
       <img id="fondo"           src="fondo.png">
@@ -32,47 +73,40 @@
       <img id="frente"          src="frente.png">
     </a-assets>
 
-    <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false"></a-camera>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <!-- Target de la obra -->
     <a-entity mindar-image-target="targetIndex: 0">
-
-      <!-- Fondo (más atrás) -->
-      <a-image src="#fondo" 
-               position="0 0 0" 
-               width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
-
-      <!-- Detalles de fondo -->
-      <a-image src="#detalles_fondo" 
-               position="0 0 0.04" 
-               width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
-
-      <!-- Capas intermedias -->
-      <a-image src="#capa3" 
-               position="0 0 0.08" 
-               width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
-
-      <a-image src="#capa4" 
-               position="0 0 0.12" 
-               width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
-
-      <a-image src="#capa5" 
-               position="0 0 0.16" 
-               width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
-
-      <!-- Frente (más cerca de la cámara) -->
-      <a-image src="#frente" 
-               position="0 0 0.22" 
-               width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
-
+      <a-image src="#fondo"          position="0 0 0"    width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
+      <a-image src="#detalles_fondo" position="0 0 0.04" width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
+      <a-image src="#capa3"          position="0 0 0.08" width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
+      <a-image src="#capa4"          position="0 0 0.12" width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
+      <a-image src="#capa5"          position="0 0 0.16" width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
+      <a-image src="#frente"         position="0 0 0.22" width="1" height="1.4" material="transparent: true; alphaTest: 0.1"></a-image>
     </a-entity>
   </a-scene>
+
+  <script>
+    const startBtn = document.getElementById('start-btn');
+    const startScreen = document.getElementById('start-screen');
+    const arScene = document.getElementById('ar-scene');
+
+    startBtn.addEventListener('click', async () => {
+      try {
+        // Pedimos permiso de cámara con gesto del usuario (obligatorio en iOS)
+        await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: 'environment' } 
+        });
+
+        // Ocultamos la pantalla de inicio y mostramos la escena AR
+        startScreen.style.display = 'none';
+        arScene.style.display = 'block';
+
+      } catch (err) {
+        alert('No se pudo acceder a la cámara. Andá a Ajustes → Safari → Cámara y permití el acceso.');
+        console.error(err);
+      }
+    });
+  </script>
 
 </body>
 </html>
