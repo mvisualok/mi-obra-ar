@@ -9,15 +9,36 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
-    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
     #inicio {
-      position: fixed; inset: 0; z-index: 9999;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      text-align: center; background: #000; color: white; font-family: Arial, sans-serif; padding: 30px;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 30px;
     }
     #boton {
-      margin-top: 25px; padding: 16px 30px; border: none; border-radius: 30px;
-      background: white; color: black; font-size: 17px; font-weight: bold;
+      margin-top: 25px;
+      padding: 16px 30px;
+      border: none;
+      border-radius: 30px;
+      background: white;
+      color: black;
+      font-size: 17px;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -38,20 +59,40 @@
     embedded
   >
     <a-assets>
-      <img id="fondo" src="./fondo.png" crossorigin="anonymous">
-      <img id="frente" src="./frente.png" crossorigin="anonymous">
+      <img id="fondo"          src="./fondo.png"          crossorigin="anonymous">
+      <img id="detalles_fondo" src="./detalles_fondo.png" crossorigin="anonymous">
+      <img id="capa3"          src="./capa3.png"          crossorigin="anonymous">
+      <img id="capa4"          src="./capa4.png"          crossorigin="anonymous">
+      <img id="capa5"          src="./capa5.png"          crossorigin="anonymous">
+      <img id="frente"         src="./frente.png"         crossorigin="anonymous">
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity mindar-image-target="targetIndex: 0">
-      <!-- Fondo -->
+
+      <!-- Fondo (más atrás) -->
       <a-image src="#fondo" position="0 0 0" width="1" height="1.4"
                material="transparent: true; alphaTest: 0.1"></a-image>
 
-      <!-- Frente (un poco más adelante) -->
-      <a-image src="#frente" position="0 0 0.15" width="1" height="1.4"
+      <!-- Detalles de fondo -->
+      <a-image src="#detalles_fondo" position="0 0 0.04" width="1" height="1.4"
                material="transparent: true; alphaTest: 0.1"></a-image>
+
+      <!-- Capas intermedias -->
+      <a-image src="#capa3" position="0 0 0.08" width="1" height="1.4"
+               material="transparent: true; alphaTest: 0.1"></a-image>
+
+      <a-image src="#capa4" position="0 0 0.12" width="1" height="1.4"
+               material="transparent: true; alphaTest: 0.1"></a-image>
+
+      <a-image src="#capa5" position="0 0 0.16" width="1" height="1.4"
+               material="transparent: true; alphaTest: 0.1"></a-image>
+
+      <!-- Frente (más cerca) -->
+      <a-image src="#frente" position="0 0 0.22" width="1" height="1.4"
+               material="transparent: true; alphaTest: 0.1"></a-image>
+
     </a-entity>
   </a-scene>
 
