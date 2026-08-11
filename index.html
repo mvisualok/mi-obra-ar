@@ -59,7 +59,6 @@
     <button id="boton">ACTIVAR REALIDAD AUMENTADA</button>
   </div>
 
-  <!-- Preview de cámara -->
   <video id="preview" autoplay playsinline muted></video>
 
   <a-scene
@@ -105,6 +104,7 @@
       const boton = document.querySelector("#boton");
       const preview = document.querySelector("#preview");
       let arSystem;
+      let stream = null;
 
       scene.addEventListener("loaded", function () {
         arSystem = scene.systems["mindar-image-system"];
@@ -112,27 +112,32 @@
 
       boton.addEventListener("click", async function () {
         try {
-          // 1. Primero pedimos la cámara y la mostramos
-          const stream = await navigator.mediaDevices.getUserMedia({
+          // 1. Activamos la cámara y la mostramos
+          stream = await navigator.mediaDevices.getUserMedia({
             video: { facingMode: "environment" },
             audio: false
           });
           preview.srcObject = stream;
           preview.style.display = "block";
-
-          // Ocultamos la pantalla de inicio
           document.querySelector("#inicio").style.display = "none";
 
-          // 2. Después de 1 segundo arrancamos MindAR
+          // 2. Después de 1.5 segundos detenemos el preview y arrancamos MindAR
           setTimeout(() => {
+            // Detenemos el stream del preview para liberar la cámara
+            if (stream) {
+              stream.getTracks().forEach(track => track.stop());
+            }
+            preview.style.display = "none";
+
+            // Mostramos y arrancamos la escena AR
+            scene.style.display = "block";
             if (arSystem) {
-              scene.style.display = "block";
               arSystem.start();
             }
-          }, 1200);
+          }, 1500);
 
         } catch (err) {
-          alert("No se pudo acceder a la cámara. Revisá los permisos.");
+          alert("No se pudo acceder a la cámara");
           console.error(err);
         }
       });
