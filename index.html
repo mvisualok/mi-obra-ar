@@ -40,6 +40,17 @@
       font-size: 17px;
       font-weight: bold;
     }
+    /* Forzar que el video de la cámara se vea */
+    video {
+      display: block !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      z-index: -1 !important;
+    }
   </style>
 </head>
 <body>
@@ -67,29 +78,21 @@
       <img id="frente"         src="./frente.png"         crossorigin="anonymous">
     </a-assets>
 
-    <!-- Cámara (importante que esté así) -->
-    <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false"></a-camera>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity mindar-image-target="targetIndex: 0">
-
       <a-image src="#fondo" position="0 0 0" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
-
+               material="transparent: true; alphaTest: 0.1"></a-image>
       <a-image src="#detalles_fondo" position="0 0 0.04" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
-
+               material="transparent: true; alphaTest: 0.1"></a-image>
       <a-image src="#capa3" position="0 0 0.08" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
-
+               material="transparent: true; alphaTest: 0.1"></a-image>
       <a-image src="#capa4" position="0 0 0.12" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
-
+               material="transparent: true; alphaTest: 0.1"></a-image>
       <a-image src="#capa5" position="0 0 0.16" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
-
+               material="transparent: true; alphaTest: 0.1"></a-image>
       <a-image src="#frente" position="0 0 0.22" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
-
+               material="transparent: true; alphaTest: 0.1"></a-image>
     </a-entity>
   </a-scene>
 
@@ -110,6 +113,21 @@
         }
         document.querySelector("#inicio").style.display = "none";
         arSystem.start();
+
+        // Intento extra de forzar el video de la cámara
+        setTimeout(() => {
+          const video = document.querySelector("video");
+          if (video) {
+            video.style.display = "block";
+            video.style.position = "absolute";
+            video.style.top = "0";
+            video.style.left = "0";
+            video.style.width = "100%";
+            video.style.height = "100%";
+            video.style.objectFit = "cover";
+            video.style.zIndex = "-1";
+          }
+        }, 1000);
       });
     });
   </script>
