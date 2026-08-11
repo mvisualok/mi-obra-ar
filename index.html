@@ -67,31 +67,28 @@
       <img id="frente"         src="./frente.png"         crossorigin="anonymous">
     </a-assets>
 
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <!-- Cámara (importante que esté así) -->
+    <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false"></a-camera>
 
     <a-entity mindar-image-target="targetIndex: 0">
 
-      <!-- Fondo (más atrás) -->
       <a-image src="#fondo" position="0 0 0" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
+               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
 
-      <!-- Detalles de fondo -->
       <a-image src="#detalles_fondo" position="0 0 0.04" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
+               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
 
-      <!-- Capas intermedias -->
       <a-image src="#capa3" position="0 0 0.08" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
+               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
 
       <a-image src="#capa4" position="0 0 0.12" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
+               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
 
       <a-image src="#capa5" position="0 0 0.16" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
+               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
 
-      <!-- Frente (más cerca) -->
       <a-image src="#frente" position="0 0 0.22" width="1" height="1.4"
-               material="transparent: true; alphaTest: 0.1"></a-image>
+               material="transparent: true; alphaTest: 0.1; side: double"></a-image>
 
     </a-entity>
   </a-scene>
