@@ -40,15 +40,6 @@
       font-size: 17px;
       font-weight: bold;
     }
-    #preview {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 1;
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -59,17 +50,13 @@
     <button id="boton">ACTIVAR REALIDAD AUMENTADA</button>
   </div>
 
-  <video id="preview" autoplay playsinline muted></video>
-
   <a-scene
-    id="ar-scene"
     mindar-image="imageTargetSrc: ./targets.mind; autoStart: false; uiLoading: no; uiScanning: no; uiError: no;"
     color-space="sRGB"
     renderer="colorManagement: true, physicallyCorrectLights"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
     embedded
-    style="display: none;"
   >
     <a-assets>
       <img id="fondo"          src="./fondo.png"          crossorigin="anonymous">
@@ -100,46 +87,21 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const scene = document.querySelector("#ar-scene");
+      const scene = document.querySelector("a-scene");
       const boton = document.querySelector("#boton");
-      const preview = document.querySelector("#preview");
       let arSystem;
-      let stream = null;
 
       scene.addEventListener("loaded", function () {
         arSystem = scene.systems["mindar-image-system"];
       });
 
-      boton.addEventListener("click", async function () {
-        try {
-          // 1. Activamos la cámara y la mostramos
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "environment" },
-            audio: false
-          });
-          preview.srcObject = stream;
-          preview.style.display = "block";
-          document.querySelector("#inicio").style.display = "none";
-
-          // 2. Después de 1.5 segundos detenemos el preview y arrancamos MindAR
-          setTimeout(() => {
-            // Detenemos el stream del preview para liberar la cámara
-            if (stream) {
-              stream.getTracks().forEach(track => track.stop());
-            }
-            preview.style.display = "none";
-
-            // Mostramos y arrancamos la escena AR
-            scene.style.display = "block";
-            if (arSystem) {
-              arSystem.start();
-            }
-          }, 1500);
-
-        } catch (err) {
-          alert("No se pudo acceder a la cámara");
-          console.error(err);
+      boton.addEventListener("click", function () {
+        if (!arSystem) {
+          alert("Esperá unos segundos e intentá de nuevo");
+          return;
         }
+        document.querySelector("#inicio").style.display = "none";
+        arSystem.start();
       });
     });
   </script>
